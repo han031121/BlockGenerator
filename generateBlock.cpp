@@ -7,26 +7,42 @@ bool cmp(std::pair<Tuple,double> a, std::pair<Tuple,double> b) {
     return a.second < b.second;
 }
 
+void blockData::init() {
+    data = {};
+    std::fill(&tempData[0][0][0], &tempData[0][0][0] + MAX_SIZE*MAX_SIZE*MAX_SIZE, 0);
+}
+
 double blockData::setWeight(int r, int c, int h) {
     return 1.0;
 }
 
 void blockData::convertBlockData() {
-    
+    for(int i = MID - max_r; i <= MID + max_r; i++) {
+        for(int j = MID - max_c; j <= MID + max_c; j++) {
+            for(int k = max_h; k >= 1; k--) {
+                if(tempData[i][j][k]) {
+                    data.push_back({{i,j}, k});
+                    break;
+                }
+            }
+        }
+    }
 }
 
 void blockData::generateBlock() {
+    init();
+    
     int dr[4] = {-1,0,1,0};
     int dc[4] = {0,1,0,-1};
     int cur_count = 0;
     std::uniform_int_distribution<int> dis(block_count_pair.first, block_count_pair.second);
     block_count = dis(mt);
 
-    tempData[MID][MID][0] = 1;
+    tempData[MID][MID][1] = 1;
     std::vector<Tuple> created;
     cur_count++;
 
-    created.push_back(std::make_tuple(MID,MID,0));
+    created.push_back(std::make_tuple(MID,MID,1));
 
     while(cur_count < block_count) {
         double weight_sum = 0;
@@ -53,6 +69,7 @@ void blockData::generateBlock() {
         }
 
         for(Tuple t : adj) {
+            std::cout << "adj : " << get<0>(t) << " " << get<1>(t) << " " << get<2>(t) << "\n";
             weight_sum += setWeight(get<0>(t), get<1>(t), get<2>(t));
             weight_list.push_back({t, weight_sum});
         }
@@ -68,6 +85,8 @@ void blockData::generateBlock() {
             created.push_back(cur);
             tempData[get<0>(cur)][get<1>(cur)][get<2>(cur)] = 1;
             cur_count++;
+            std::cout << "selected : " << get<0>(cur) << " " << get<1>(cur) << " " << get<2>(cur) << "\n";
+            break;
         }
     }
 
@@ -79,6 +98,8 @@ void blockData::printData() {
 
     for(Block b : data)
         tmp[b.first.first][b.first.second] = b.second;
+
+    std::cout << "current block_count : " << block_count << "\n";
 
     for(int i = MID - max_r; i <= MID + max_r; i++) {
         for(int j = MID - max_c; j <= MID + max_c; j++)
