@@ -1,4 +1,4 @@
-#include "generateBlock.h"
+#include "blockGenerator.h"
 
 std::random_device rd;
 std::mt19937 mt(rd());
@@ -10,10 +10,6 @@ bool cmp(std::pair<Tuple,double> a, std::pair<Tuple,double> b) {
 void blockData::init() {
     data = {};
     std::fill(&tempData[0][0][0], &tempData[0][0][0] + MAX_SIZE*MAX_SIZE*MAX_SIZE, 0);
-}
-
-double blockData::setWeight(int r, int c, int h) {
-    return 1.0;
 }
 
 void blockData::convertBlockData() {
@@ -69,7 +65,7 @@ void blockData::generateBlock() {
         }
 
         for(Tuple t : adj) {
-            std::cout << "adj : " << get<0>(t) << " " << get<1>(t) << " " << get<2>(t) << "\n";
+            //std::cout << "adj : " << get<0>(t) << " " << get<1>(t) << " " << get<2>(t) << "\n";
             weight_sum += setWeight(get<0>(t), get<1>(t), get<2>(t));
             weight_list.push_back({t, weight_sum});
         }
@@ -91,19 +87,4 @@ void blockData::generateBlock() {
     }
 
     convertBlockData();
-}
-
-void blockData::printData() {
-    int tmp[MAX_SIZE][MAX_SIZE] = {0};
-
-    for(Block b : data)
-        tmp[b.first.first][b.first.second] = b.second;
-
-    std::cout << "current block_count : " << block_count << "\n";
-
-    for(int i = MID - max_r; i <= MID + max_r; i++) {
-        for(int j = MID - max_c; j <= MID + max_c; j++)
-            std::cout << tmp[i][j] << " ";
-        std::cout << "\n";
-    }
 }

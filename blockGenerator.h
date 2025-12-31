@@ -27,9 +27,10 @@ class blockData {
         int created_count[MAX_SIZE][MAX_SIZE][MAX_SIZE];
         BlockList data = {};
 
-        void init(); //initialize data
         bool checkCreatable(int r, int c, int h); //check invisibility and max size limit
         double setWeight(int r, int c, int h); //calculate weight of specific position
+
+        void init(); //initialize data
         void convertBlockData(); //create blockData based on tempData
 
     public:
@@ -44,6 +45,7 @@ class blockData {
             }
 
         void generateBlock(); //make new Block data
+        
         void printData();
         const BlockList& getData() const { return data; } //get current Block data
 };

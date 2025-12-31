@@ -1,4 +1,4 @@
-#include "generateBlock.h"
+#include "blockGenerator.h"
 
 int main() {
     int tc;

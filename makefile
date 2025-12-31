@@ -1,7 +1,7 @@
 CXX = g++
 CXXFLAGS = -Wall -O2
 
-SRCS = main.cpp generateBlock.cpp
+SRCS = main.cpp generateBlock.cpp setWeight.cpp utility.cpp
 OBJS = $(SRCS:.cpp=.o)
 TARGET = main.exe
 
