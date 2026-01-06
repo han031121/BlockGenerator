@@ -3,10 +3,6 @@
 std::random_device rd;
 std::mt19937 mt(rd());
 
-bool cmp(std::pair<Tuple,double> a, std::pair<Tuple,double> b) {
-    return a.second < b.second;
-}
-
 void blockData::generateBlock() {
     init();
     
@@ -53,20 +49,20 @@ void blockData::generateBlock() {
         }
 
         std::uniform_real_distribution<double> dis_weight(0, weight_sum);
-        sort(weight_list.begin(), weight_list.end(), cmp);
         double cur_weight = dis_weight(mt);
 
         for(std::pair<Tuple,double> p : weight_list) {
-            if(cur_weight > p.second)
-                continue;
+            if(cur_weight <= p.second) {
+                Tuple cur = p.first;
 
-            Tuple cur = p.first;
-            created.push_back(cur);
-            tempData[get<0>(cur)][get<1>(cur)][get<2>(cur)] = 1;
-            cur_count++;
-            measureSize(cur);
-            //std::cout << "selected : " << get<0>(cur) << " " << get<1>(cur) << " " << get<2>(cur) << "\n";
-            break;
+                created.push_back(cur);
+                tempData[get<0>(cur)][get<1>(cur)][get<2>(cur)] = 1;
+                created_count[get<0>(cur)][get<1>(cur)][get<2>(cur)]++;
+                cur_count++;
+                measureSize(cur);\
+                //std::cout << "generateBlock - selected : " << get<0>(cur) << " " << get<1>(cur) << " " << get<2>(cur) << "\n";
+                break;
+            }
         }
     }
 

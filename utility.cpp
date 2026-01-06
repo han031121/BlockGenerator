@@ -7,8 +7,12 @@ void blockData::printData() {
         tmp[b.first.first][b.first.second] = b.second;
 
     for(int i = MID - max_r; i <= MID + max_r; i++) {
-        for(int j = MID - max_c; j <= MID + max_c; j++)
-            std::cout << tmp[i][j] << " ";
+        for(int j = MID - max_c; j <= MID + max_c; j++) {
+            if(tmp[i][j] == 0)
+                std::cout << "." << " ";
+            else
+                std::cout << tmp[i][j] << " ";
+        }
         std::cout << "\n";
     }
 }

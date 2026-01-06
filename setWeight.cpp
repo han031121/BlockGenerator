@@ -10,19 +10,26 @@ bool blockData::checkCreatable(int r, int c, int h) {
 
     if(h > 1 && tempData[r][c][h-1] == false)
         return false;
+
+    //TODO : uncountable block rule implement
         
     return true;
 }
 
 double blockData::setWeight(int r, int c, int h) {
     double mul = 1.0;
+    double possibility = DEFAULT_WEIGHT;
 
     if(!checkCreatable(r,c,h))
         return 0.0;
 
-    //TODO : Density implement
+    int dist = abs(r - MID) + abs(c - MID);
+    mul *= exp(-DENSITY_COEFF * (double)dist * density_var);
 
-    //TODO : Duplication implement
+    mul *= exp(-DEDUP_COEFF * (double)created_count[r][c][h] * dedup_var);
 
-    return DEFAULT_WEIGHT * mul;
+    possibility *= mul;
+    //std::cout << "setWeight - position : " << r << " " << c << " " << h << "\n";
+    //std::cout << "setWeight - possibility : " << possibility << "\n";
+    return possibility;
 }
