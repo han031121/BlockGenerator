@@ -14,9 +14,10 @@ void blockData::generateBlock() {
 
     tempData[MID][MID][1] = 1;
     std::vector<Tuple> created;
+    
     cur_count++;
-
     created.push_back(std::make_tuple(MID,MID,1));
+    measureSize(std::make_tuple(MID,MID,1));
 
     while(cur_count < block_count) {
         double weight_sum = 0;
@@ -25,7 +26,6 @@ void blockData::generateBlock() {
         std::vector<std::pair<Tuple,double>> weight_list;
 
         for(Tuple cur : created) {
-
             for(int i=0; i<5; i++) {
                 Tuple next;
                 if(i < 4)
@@ -51,6 +51,11 @@ void blockData::generateBlock() {
         std::uniform_real_distribution<double> dis_weight(0, weight_sum);
         double cur_weight = dis_weight(mt);
 
+        if(weight_list.empty() || weight_sum <= EPSILON) {
+            std::cout << "generateBlock - Cannot generate block anymore" << "\n";
+            break;
+        }
+
         for(std::pair<Tuple,double> p : weight_list) {
             if(cur_weight <= p.second) {
                 Tuple cur = p.first;
@@ -59,7 +64,7 @@ void blockData::generateBlock() {
                 tempData[get<0>(cur)][get<1>(cur)][get<2>(cur)] = 1;
                 created_count[get<0>(cur)][get<1>(cur)][get<2>(cur)]++;
                 cur_count++;
-                measureSize(cur);\
+                measureSize(cur);
                 //std::cout << "generateBlock - selected : " << get<0>(cur) << " " << get<1>(cur) << " " << get<2>(cur) << "\n";
                 break;
             }

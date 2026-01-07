@@ -9,6 +9,7 @@
 
 #define MAX_SIZE 21
 #define MID 10
+#define EPSILON 1e-12
 #define DEFAULT_WEIGHT 1.0
 #define DENSITY_COEFF 0.02
 #define DEDUP_COEFF 0.02
