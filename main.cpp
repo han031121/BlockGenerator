@@ -21,11 +21,11 @@ int main() {
 
     for(int i=1; i<=tc; i++) {
         std::cout << "\n----- case " << i << " -----\n";
-
+        
         b.generateBlock();
-
+        
         b.printStatus();
-        b.printData();
+        b.printHeightData();
     }
 
     std::cout << "press any key";

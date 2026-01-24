@@ -1,36 +1,49 @@
 #include "blockGenerator.h"
 
 bool blockData::checkCreatable(int r, int c, int h) {
-    if(size_r >= max_r && (r > biggest_r || r < smallest_r))
+    if(r >= max_r || r < 0)
         return false;
-    if(size_c >= max_c && (c > biggest_c || c < smallest_c))
+    if(c >= max_c || c < 0)
         return false;
-    if(size_h >= max_h && h > biggest_h)
+    if(h > max_h)
         return false;
-
-    if(h > 1 && tempData[r][c][h-1] == false)
+    
+    if(h > 1 && temp_data[r][c][h-1] == false)
         return false;
 
     //TODO : uncountable block rule implement
     
-        
+    
     return true;
 }
 
-double blockData::setWeight(int r, int c, int h) {
+double blockData::getWeight(int r, int c, int h) {
+    if(!checkCreatable(r,c,h)) {
+        //std::cout << "DEBUG - not creatable : " << r << " " << c << " " << h <<"\n";
+        return 0;
+    }
+
+    //std::cout << "DEBUG - calc weight : " << r << " " << c << " " << h <<"\n";
+
     double mul = 1.0;
-    double possibility = DEFAULT_WEIGHT;
+    double possibility = weight_field[r][c][h];
 
     if(!checkCreatable(r,c,h))
         return 0.0;
 
-    int dist = abs(r - MID) + abs(c - MID);
-    mul *= exp(-DENSITY_COEFF * (double)dist * density_var);
-
-    mul *= exp(-DEDUP_COEFF * (double)created_count[r][c][h] * dedup_var);
+    mul *= exp(-DEDUP_COEFF * created_count[r][c][h] * dedup_var);
 
     possibility *= mul;
-    //std::cout << "setWeight - position : " << r << " " << c << " " << h << "\n";
-    //std::cout << "setWeight - possibility : " << possibility << "\n";
     return possibility;
+}
+
+void blockData::setWeight() {
+    std::cout << "DEBUG - set weight\n";
+    for(int r = 0; r < max_r; r++) {
+        for(int c = 0; c < max_c; c++) {
+            double dist = sqrt(r*r + c*c);
+            for(int h=0; h <= max_h; h++)
+                weight_field[r][c][h] = DEFAULT_WEIGHT * exp(-DENSITY_COEFF * dist * density_var);
+        }
+    }
 }
