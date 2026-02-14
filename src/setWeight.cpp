@@ -70,7 +70,7 @@ double blockData::getWeight(int r, int c, int h) {
 void blockData::setWeight() {
     for(int r = 0; r < max_r; r++) {
         for(int c = 0; c < max_c; c++) {
-            double dist = sqrt(r*r + c*c);
+            double dist = r + c;
             for(int h=0; h <= max_h; h++)
                 weight_field[r][c][h] = DEFAULT_WEIGHT * exp(-DENSITY_COEFF * dist * density_var);
         }

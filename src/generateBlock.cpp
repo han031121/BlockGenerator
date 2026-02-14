@@ -71,20 +71,4 @@ void blockData::generateBlock() {
             }
         }
     }
-
-    convertBlockData();
-}
-
-void blockData::convertBlockData() {
-    for(int i = 0; i < max_r; i++) {
-        for(int j = 0; j < max_c; j++) {
-            for(int k = max_h; k >= 1; k--) {
-                if(cubic_data[i][j][k]) {
-                    Block tmp = {i,j,k};
-                    data.push_back(tmp);
-                    break;
-                }
-            }
-        }
-    }
 }

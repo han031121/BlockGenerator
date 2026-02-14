@@ -14,11 +14,6 @@
 #define DEDUP_COEFF 0.02
 
 typedef std::tuple<int,int,int> Tuple;
-struct Block {
-    int r, c;
-    int height;
-};
-typedef std::vector<Block> BlockList;
 
 using std::get;
 
@@ -44,7 +39,6 @@ class blockData {
         //data
         bool cubic_data[MAX_SIZE][MAX_SIZE][MAX_SIZE] = {0};
         int height_data[MAX_SIZE][MAX_SIZE] = {0};
-        BlockList data = {};
 
         //setting weight
         bool checkCreatable(int r, int c, int h); //check invisibility and max size limit
@@ -54,7 +48,6 @@ class blockData {
 
         //generating block
         void init(); //initialize data
-        void convertBlockData(); //create blockData and height_data based on cubic_data
         void measureSize(Tuple t); //measure current size
 
     public:
@@ -72,10 +65,9 @@ class blockData {
             }
 
         void generateBlock(); //make new Block data
-        const BlockList& getData() const { return data; } //get current Block data
+        const bool getData(int r, int c, int h) const { return cubic_data[r][c][h]; } //get current Block data
 
         //utility
         void printHeightData();
-        void printVectorData();
         void printStatus();
 };
