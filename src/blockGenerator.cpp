@@ -14,6 +14,7 @@ void blockData::generateBlock() {
     block_count = dis(mt);
 
     cubic_data[0][0][1] = 1;
+    height_data[0][0] = 1;
     std::vector<Tuple> created;
     
     cur_count++;
@@ -59,13 +60,14 @@ void blockData::generateBlock() {
 
         for(std::pair<Tuple,double> p : weight_list) {
             if(cur_weight <= p.second) {
+                //block creation
                 Tuple cur = p.first;
 
                 created.push_back(cur);
+                cur_count++;
+
                 cubic_data[get<0>(cur)][get<1>(cur)][get<2>(cur)] = 1;
                 height_data[get<0>(cur)][get<1>(cur)] = std::max(height_data[get<0>(cur)][get<1>(cur)], get<2>(cur));
-                created_count[get<0>(cur)][get<1>(cur)][get<2>(cur)]++;
-                cur_count++;
                 measureSize(cur);
                 //std::cout << "generateBlock - selected : " << get<0>(cur) << " " << get<1>(cur) << " " << get<2>(cur) << "\n";
                 break;
@@ -93,7 +95,6 @@ bool blockData::checkCreatable(int r, int c, int h) {
 }
 
 bool blockData::checkObscure(int r, int c, int h) {
-    //TODO : implement this fucking function
     int check_r, check_c, check_h;
     //std::cout << "checkObscure - (r,c,h) = " << "(" << r << ", " << c << ", " << h << ") ";
 
@@ -129,14 +130,11 @@ double blockData::getWeight(int r, int c, int h) {
     if(!checkCreatable(r,c,h))
         return 0;
     //std::cout << "DEBUG - calc weight : " << r << " " << c << " " << h <<"\n";
-
     double mul = 1.0;
     double possibility = weight_field[r][c][h];
 
     if(!checkCreatable(r,c,h))
         return 0.0;
-
-    mul *= exp(-DEDUP_COEFF * created_count[r][c][h] * dedup_var);
 
     possibility *= mul;
     return possibility;
