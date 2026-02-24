@@ -24,4 +24,5 @@ run: $(TARGET)
 	$(TARGET)
 
 clean:
-	del /Q $(BUILD_DIR)\*.o $(TARGET) 2>nul
+	-del /Q $(BUILD_DIR)\*.o
+	-del /Q $(BUILD_DIR)\main.exe
