@@ -1,11 +1,14 @@
 #pragma once
 
 #include "ofMain.h"
-#include "blockGenerator.h"
+#include "ofxBlockGenerator.h"
 
 class ofApp : public ofBaseApp{
 
 	public:
+		blockData* b;
+		drawObject* d;
+
 		void setup();
 		void update();
 		void draw();

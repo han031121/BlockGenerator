@@ -4,7 +4,7 @@
 void ofApp::setup(){
 	int i1, i2, i3, i4, i5, i6;
 	std::cin >> i1 >> i2 >> i3 >> i4 >> i5 >> i6;
-	blockData b(i1, i2, i3, i4, i5, (double)i6);
+	b = new blockData(i1, i2, i3, i4, i5, (double)i6);
 }
 
 //--------------------------------------------------------------
