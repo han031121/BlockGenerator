@@ -6,8 +6,11 @@
 class ofApp : public ofBaseApp{
 
 	public:
-		blockData* b;
-		drawObject* d;
+		blockData* block_data;
+		drawObject* draw_object;
+
+		ofPixels pix;
+		ofImage img;
 
 		void setup();
 		void update();

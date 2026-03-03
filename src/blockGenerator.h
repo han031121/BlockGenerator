@@ -6,6 +6,7 @@
 #include <queue>
 #include <random>
 #include <cmath>
+#include <numbers>
 
 #define MAX_SIZE 13
 #define EPSILON 1e-12
@@ -58,12 +59,17 @@ class blockData {
                     _max_r < 1 || _max_c < 1 || _max_h < 1)
                     throw std::length_error("invalid max size");
 
-				std::cout << "blockData generated.\n";
+				std::cout << "[ blockData ] : blockData generated.\n";
                 setWeight();
             }
 
         void generateBlock(); //make new Block data
-        const bool getData(int r, int c, int h) const { return cubic_data[r][c][h]; } //get current Block data
+
+        bool getData(int r, int c, int h) { return cubic_data[r][c][h]; } //get current Block data
+		int getHeightData(int r, int c) { return height_data[r][c]; }
+		int getMaxRow() { return max_r; }
+		int getMaxCol() { return max_c; }
+		int getMaxHeight() { return max_h; }
 
         //utility
         void printHeightData();
