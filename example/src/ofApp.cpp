@@ -27,7 +27,7 @@ void ofApp::keyPressed(int key){
 
 		block_data->generateBlock();
 		block_data->printHeightData();
-		draw_object = new drawObject(block_data, 600, 600);
+		draw_object = new drawObject(block_data, 1000, 1000);
 	}
 	else if (key == 'f') {
 		std::cout << "[ ofApp ] : modify degree\n";

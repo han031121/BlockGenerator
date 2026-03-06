@@ -1,6 +1,6 @@
 #include "drawBlock.h"
 
-//TODO : 테두리 진하게 그리기, 음영 적용 (광원)
+//TODO : 카메라 거리 자동 조절, 
 
 void drawObject::setup() {
 	ofFbo::Settings s;
@@ -10,7 +10,7 @@ void drawObject::setup() {
 	s.useDepth = true;
 	s.useStencil = true;
 	s.depthStencilAsTexture = false;
-	s.numSamples = 0;
+	s.numSamples = 4;
 	fbo.allocate(s);
 
 	light.setup();
@@ -30,23 +30,50 @@ void drawObject::drawBlocks() {
 		for (int c = 0; c < max_c; c++) {
 			int height = data->getHeightData(r, c);
 
-			for (int h = 0; h < height; h++) {
-				drawSingleBlock(r, c, h);
-			}
+			for (int h = 0; h < height; h++)
+				ofDrawBox(r * block_size, h * block_size, -c * block_size, block_size);
 		}
 	}
 }
 
-void drawObject::drawSingleBlock(int r, int c, int h) {
-	std::cout << "[ drawSingleBlock ] : " << r << ", " << c << ", " << h << "\n";
+void drawObject::drawOutline() {
+	//TODO : implement function
+	int max_r = data->getMaxRow();
+	int max_c = data->getMaxCol();
 
-	ofFill();
-	ofSetColor(draw_color, 255);
-	ofDrawBox(r * block_size, h * block_size, -c * block_size, block_size);
-
-	ofNoFill();
 	ofSetColor(0, 0, 0, 255);
-	ofDrawBox(r * block_size, h * block_size, -c * block_size, block_size);
+
+	for (int r = 0; r < max_r; r++) {
+		for (int c = 0; c < max_c; c++) {
+			int height = data->getHeightData(r, c);
+
+			for (int h = 0; h < height; h++)
+				drawSingleOutline(r, c, h);
+		}
+	}
+}
+
+void drawObject::drawSingleOutline(int r, int c, int h) {
+	int mul_a[4] = { 1, 1, -1, -1 };
+	int mul_b[4] = { 1, -1, 1, -1 };
+	float bias = 0.01;
+	glm::vec3 block_center = { r * block_size, h * block_size, -c * block_size };
+
+	for (int i = 0; i < 4; i++) {
+		glm::vec3 mul = { mul_a[i], mul_b[i], 0 }; //z fixed
+		glm::vec3 edge_center = block_center + (float)block_size / 2 * mul;
+		ofDrawBox(edge_center, thickness, thickness, block_size);
+	}
+	for (int i = 0; i < 4; i++) {
+		glm::vec3 mul = { 0, mul_b[i], mul_a[i] }; //x fixed
+		glm::vec3 edge_center = block_center + (float)block_size / 2 * mul;
+		ofDrawBox(edge_center, block_size, thickness, thickness);
+	}
+	for (int i = 0; i < 4; i++) {
+		glm::vec3 mul = { mul_a[i], 0, mul_b[i] }; //y fixed
+		glm::vec3 edge_center = block_center + (float)block_size / 2 * mul;
+		ofDrawBox(edge_center, thickness, block_size, thickness);
+	}
 }
 
 void drawObject::setCamera() {
@@ -81,23 +108,23 @@ void drawObject::render() {
 	light.enable();
 
 	ofEnableDepthTest();
-	//mat.begin();
+
 	cam.begin();
-
+	ofSetColor(draw_color, 255);
 	drawBlocks();
-
 	cam.end();
-	//mat.end();
-	ofDisableDepthTest();
 
 	light.disable();
 	ofDisableLighting();
 
-	fbo.end();
-}
+	cam.begin();
+	ofSetColor(0, 0, 0, 255);
+	drawOutline();
+	cam.end();
 
-void drawObject::getPixels(ofPixels& pixels) {
-	fbo.readToPixels(pixels);
+	ofDisableDepthTest();
+
+	fbo.end();
 }
 
 void drawObject::saveImage(std::string filename) {

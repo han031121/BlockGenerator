@@ -6,8 +6,8 @@
 class ofApp : public ofBaseApp{
 
 	public:
-		blockData* block_data;
-		drawObject* draw_object;
+		blockData* block_data = nullptr;
+		drawObject* draw_object = nullptr;
 
 		ofPixels pix;
 		ofImage img;
