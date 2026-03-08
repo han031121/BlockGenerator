@@ -70,6 +70,9 @@ class blockData {
 		int getMaxRow() { return max_r; }
 		int getMaxCol() { return max_c; }
 		int getMaxHeight() { return max_h; }
+		int getSizeRow() { return size_r; }
+		int getSizeCol() { return size_c; }
+		int getSizeHeight() { return size_h; }
 
         //utility
         void printHeightData();

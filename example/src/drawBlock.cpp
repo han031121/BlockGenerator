@@ -1,7 +1,5 @@
 #include "drawBlock.h"
 
-//TODO : 카메라 거리 자동 조절, 
-
 void drawObject::setup() {
 	ofFbo::Settings s;
 	s.width = width;
@@ -19,7 +17,7 @@ void drawObject::setup() {
 	light.setSpecularColor(ofFloatColor(0.3));
 	light.setOrientation(glm::vec3(light_degree_h, 270 + light_degree_xz, 0));
 
-	ofSetGlobalAmbientColor(ofColor(35, 35, 35));
+	cam.setFov(cam_fov);
 }
 
 void drawObject::drawBlocks() {
@@ -37,7 +35,6 @@ void drawObject::drawBlocks() {
 }
 
 void drawObject::drawOutline() {
-	//TODO : implement function
 	int max_r = data->getMaxRow();
 	int max_c = data->getMaxCol();
 
@@ -77,22 +74,30 @@ void drawObject::drawSingleOutline(int r, int c, int h) {
 }
 
 void drawObject::setCamera() {
-	std::cout << "degree_xz = " << degree_xz << "\ndegree_h = " << degree_h << "\n";
-	int dist = 500;
 	float rad_xz = -degree_xz * std::numbers::pi / 180;
 	float rad_h = degree_h * std::numbers::pi / 180;
 
+	float size_r = data->getSizeRow() * block_size;
+	float size_c = data->getSizeCol() * block_size;
+	float size_h = data->getSizeHeight() * block_size;
+	float block_radius = 0.5f * sqrt(size_r * size_r + size_c * size_c + size_h * size_h);
+	float margin = 1.4;
+
+	float dist = margin * block_radius / std::sin(std::numbers::pi * cam.getFov() / 180 / 2);
+	dist = std::max(cam_min_dist, dist);
+
 	cam_center = {
-		(data->getMaxRow() - 1) * block_size * 0.5f,
-		(data->getMaxHeight() - 1) * block_size * 0.5f,
-		-(data->getMaxCol() - 1) * block_size * 0.5f
+		(data->getSizeRow() - 1) * block_size * 0.5f,
+		(data->getSizeHeight() - 1) * block_size * 0.5f,
+		-(data->getSizeCol() - 1) * block_size * 0.5f
 	};
 
-	cam.enableOrtho();
 	cam.orbitDeg(90 + degree_xz, -degree_h, dist, cam_center);
 	cam.lookAt(cam_center, {0, 1, 0});
 
-	cam_position = cam.getPosition();
+	std::cout << "[ setCamera ] : degree_xz = " << degree_xz << ", degree_h = " << degree_h << "\n";
+	std::cout << "[ setCamera ] : dist = " << dist << "\n";
+	//std::cout << "[ setCamere ] : cam_center = {" << cam_center.x << "," << cam_center.y << "," << cam_center.z << "}\n";
 }
 
 void drawObject::render() {

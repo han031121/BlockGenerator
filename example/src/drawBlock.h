@@ -16,8 +16,9 @@ class drawObject {
 		float light_degree_h;
 		float thickness;
 
+		int cam_fov = 30;
+		float cam_min_dist = 1700;
 		glm::vec3 cam_center;
-		glm::vec3 cam_position;
 
 		blockData * data = nullptr;
 
@@ -47,7 +48,11 @@ class drawObject {
 		void getPixels(ofPixels & pixels) {
 			fbo.readToPixels(pixels);
 		}
-		void degreeUpdate(float deg_xz, float deg_h) {
+		void camDegreeUpdate(float deg_xz, float deg_h) {
+			degree_xz = deg_xz;
+			degree_h = deg_h;
+		}
+		void lightDegreeUpdate(float deg_xz, float deg_h) {
 			degree_xz = deg_xz;
 			degree_h = deg_h;
 		}
