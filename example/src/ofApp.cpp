@@ -2,9 +2,8 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-	int i1, i2, i3, i4, i5, i6;
-	std::cin >> i1 >> i2 >> i3 >> i4 >> i5 >> i6;
-	block_data = new blockData(i1, i2, i3, i4, i5, (double)i6);
+	std::cout << "[ ofApp ] : generate new block data\n";
+	consoleInput();
 }
 
 //--------------------------------------------------------------
@@ -21,7 +20,7 @@ void ofApp::draw(){
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
 	if (key == 'g') {
-		std::cout << "[ ofApp ] : generate new block data and draw object\n";
+		std::cout << "[ ofApp ] : set block data and generate draw object\n";
 		if (draw_object)
 			delete draw_object;
 
@@ -29,28 +28,42 @@ void ofApp::keyPressed(int key){
 		block_data->printHeightData();
 		draw_object = new drawObject(block_data, 1000, 1000);
 	}
-	else if (key == 'f') {
-		std::cout << "[ ofApp ] : modify degree\n";
+	else if (key == 'd') {
+		std::cout << "[ ofApp ] : modify cam degree\n";
 
 		float a, b;
-		std::cout << "degree_xz : ";
+		std::cout << "cam degree_xz : ";
 		std::cin >> a;
-		std::cout << "degree_h : ";
+		std::cout << "cam degree_h : ";
 		std::cin >> b;
-		draw_object->degreeUpdate(a, b);
+		draw_object->camDegreeUpdate(a, b);
+	}
+	else if (key == 'l') {
+		std::cout << "[ ofApp ] : modify cam degree\n";
+
+		float a, b;
+		std::cout << "light degree_xz : ";
+		std::cin >> a;
+		std::cout << "light degree_h : ";
+		std::cin >> b;
+		draw_object->lightDegreeUpdate(a, b);
 	}
 	else if (key == 'r') {
 		std::cout << "[ ofApp ] : render blocks\n";
 
 		draw_object->render();
 		draw_object->getPixels(pix);
-		std::cout << "[ ofApp ] : pixel created\n";
+		//std::cout << "[ ofApp ] : pixel created\n";
 		std::cout << pix.getWidth() << "x" << pix.getHeight()
 				  << " ch=" << pix.getNumChannels()
 				  << " size=" << pix.size() << "\n";
 
 		img.setFromPixels(pix);
-		std::cout << "[ ofApp ] : image created\n";
+		//std::cout << "[ ofApp ] : image created\n";
+	}
+	else if (key == 'n') {
+		cout << "[ ofApp ] : regenerate block data\n";
+		consoleInput();
 	}
 }
 
@@ -102,4 +115,25 @@ void ofApp::gotMessage(ofMessage msg){
 //--------------------------------------------------------------
 void ofApp::dragEvent(ofDragInfo dragInfo){ 
 
+}
+
+//--------------------------------------------------------------
+void ofApp::consoleInput() {
+	if (block_data)
+		delete block_data;
+
+	int i1, i2, i3, i4, i5, i6;
+	std::cout << "block count 1 : ";
+	std::cin >> i1;
+	std::cout << "block count 2 : ";
+	std::cin >> i2;
+	std::cout << "max row : ";
+	std::cin >> i3;
+	std::cout << "max column : ";
+	std::cin >> i4;
+	std::cout << "max height : ";
+	std::cin >> i5;
+	std::cout << "density : ";
+	std::cin >> i6;
+	block_data = new blockData(i1, i2, i3, i4, i5, (double)i6);
 }
