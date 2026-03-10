@@ -1,15 +1,7 @@
 #include "drawBlock.h"
 
 void drawObject::setup() {
-	ofFbo::Settings s;
-	s.width = width;
-	s.height = height;
-	s.internalformat = GL_RGBA;
-	s.useDepth = true;
-	s.useStencil = true;
-	s.depthStencilAsTexture = false;
-	s.numSamples = 4;
-	fbo.allocate(s);
+	setFbo();
 
 	light.setup();
 	light.setDirectional();
@@ -84,6 +76,18 @@ void drawObject::drawSingleOutline(int r, int c, int h) {
 		glm::vec3 edge_center = block_center + (float)block_size / 2 * mul;
 		ofDrawBox(edge_center, thickness, block_size, thickness);
 	}
+}
+
+void drawObject::setFbo() {
+	ofFbo::Settings s;
+	s.width = width;
+	s.height = height;
+	s.internalformat = GL_RGBA;
+	s.useDepth = true;
+	s.useStencil = true;
+	s.depthStencilAsTexture = false;
+	s.numSamples = 4;
+	fbo.allocate(s);
 }
 
 void drawObject::setCamera() {
@@ -195,12 +199,12 @@ void drawObject::lightDegreeUpdate(float deg_xz, float deg_h, bool isRelative) {
 
 void drawObject::blockColorUpdate(int r, int g, int b, bool isRelative) {
 	if (isRelative) {
-		draw_color = ofColor(r, g, b);
-	}
-	else {
 		glm::vec3 new_color(draw_color.r, draw_color.g, draw_color.b);
 		new_color += glm::vec3(r, g, b);
 		draw_color = ofColor(new_color.x, new_color.y, new_color.z);
+	}
+	else {
+		draw_color = ofColor(r, g, b);
 	}
 	need_to_refresh = true;
 }

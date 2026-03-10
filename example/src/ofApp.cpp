@@ -13,9 +13,10 @@ void ofApp::update(){
 }
 
 //--------------------------------------------------------------
-void ofApp::draw(){
+void ofApp::draw() {
 	if (draw_object) {
-		draw_object->draw(MARGIN, MARGIN);
+		int size = std::min(ofGetWidth(), ofGetHeight()) - 2 * MARGIN;
+		draw_object->draw(MARGIN, MARGIN, size, size);
 	}
 }
 
@@ -31,14 +32,14 @@ void ofApp::keyPressed(int key){
 			return;
 		}
 
-		int size = std::min(ofGetWidth(), ofGetHeight());
+		int size = std::min(ofGetWidth(), ofGetHeight()) - 2 * MARGIN;
 
 		if (draw_object)
 			delete draw_object;
 
 		block_data->generateBlock();
 		block_data->printHeightData();
-		draw_object = new drawObject(block_data, size - 2 * MARGIN, size - 2 * MARGIN);
+		draw_object = new drawObject(block_data, size, size);
 	}
 
 	else if (key == 'd' || key == 'D')
