@@ -53,7 +53,7 @@ class drawObject {
 			degree_h = deg_h;
 		}
 		void lightDegreeUpdate(float deg_xz, float deg_h) {
-			degree_xz = deg_xz;
-			degree_h = deg_h;
+			light_degree_xz = deg_xz;
+			light_degree_h = deg_h;
 		}
 };

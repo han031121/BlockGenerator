@@ -198,7 +198,7 @@ void ofApp::consoleHelp() {
 	std::cout << "- S : Save image as a file\n";
 	std::cout << "- ? : Print help\n\n";
 	std::cout << "HOW TO USE\n";
-	std::cout << "1. Generate block data object (initial input or press N)\n";
+	std::cout << "1. Generate block data object (press N)\n";
 	std::cout << "2. Set block data and generate draw object (press G)\n";
 	std::cout << "3. Render image (press R)\n";
 	std::cout << "------------------------------------------------------\n\n";
