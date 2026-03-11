@@ -15,6 +15,7 @@
 #define DENSITY_COEFF 0.02
 
 typedef std::tuple<int,int,int> Tuple;
+typedef std::pair<int, int> Pair;
 
 using std::get;
 
@@ -22,10 +23,11 @@ class blockData {
 
     private:
         //condition
-        std::pair<int,int> block_count_pair; //max : max_r * max_c * max_h
+        Pair block_count_pair; //max : max_r * max_c * max_h
         int block_count; //current block_count : randomly decided in block_count_pair
         int max_r, max_c, max_h; //max : MAX_SIZE
         double density_var = 0;
+		Pair start_point;
 
         //status
         int biggest_r = 0, biggest_c = 0, biggest_h = 0;
@@ -39,13 +41,16 @@ class blockData {
         bool cubic_data[MAX_SIZE][MAX_SIZE][MAX_SIZE+1] = {0};
         int height_data[MAX_SIZE][MAX_SIZE] = {0};
 
+		//block generate
+		void setStartPoint();
+
         //setting weight
         bool checkCreatable(int r, int c, int h); //check invisibility and max size limit
         bool checkObscure(int r, int c, int h);
         double getWeight(int r, int c, int h); //get modified weight
         void setWeight(); //calculate initial weight
 
-        //generating block
+        //set status
         void init(); //initialize data
         void measureSize(Tuple t); //measure current size
 

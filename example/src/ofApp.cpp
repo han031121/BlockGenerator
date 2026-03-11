@@ -38,7 +38,8 @@ void ofApp::keyPressed(int key){
 
 		block_data->generateBlock();
 		block_data->printHeightData();
-		draw_object = new drawObject(block_data, size - 2 * MARGIN, size - 2 * MARGIN);
+		block_data->printStatus();
+		draw_object = new drawObject(block_data, size, size);
 	}
 
 	else if (key == 'd' || key == 'D')
