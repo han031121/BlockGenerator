@@ -13,9 +13,10 @@ void ofApp::update(){
 }
 
 //--------------------------------------------------------------
-void ofApp::draw(){
+void ofApp::draw() {
 	if (draw_object) {
-		draw_object->draw(MARGIN, MARGIN);
+		int size = std::min(ofGetWidth(), ofGetHeight()) - 2 * MARGIN;
+		draw_object->draw(MARGIN, MARGIN, size, size);
 	}
 }
 
@@ -31,6 +32,7 @@ void ofApp::keyPressed(int key){
 			return;
 		}
 
+		int size = std::min(ofGetWidth(), ofGetHeight()) - 2 * MARGIN;
 		int size = std::min(ofGetWidth(), ofGetHeight()) - 2 * MARGIN;
 
 		if (draw_object)
