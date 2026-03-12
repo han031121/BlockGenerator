@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <vector>
 #include <queue>
+#include <unordered_set>
 #include <random>
 #include <cmath>
 #include <numbers>
@@ -13,6 +14,7 @@
 #define EPSILON 1e-12
 #define DEFAULT_WEIGHT 100.0
 #define DENSITY_COEFF 0.02
+#define FAIL_COUNT 1000
 
 typedef std::tuple<int,int,int> Tuple;
 typedef std::pair<int, int> Pair;
@@ -33,6 +35,8 @@ class blockData {
         int biggest_r = 0, biggest_c = 0, biggest_h = 0;
         int smallest_r = MAX_SIZE, smallest_c = MAX_SIZE;
         int size_r = 0, size_c = 0, size_h = 0;
+		std::unordered_set<std::string> created_list;
+		bool isGenerated = false;
         
         //weight
         double weight_field[MAX_SIZE][MAX_SIZE][MAX_SIZE+1] = {0};
@@ -42,6 +46,7 @@ class blockData {
         int height_data[MAX_SIZE][MAX_SIZE] = {0};
 
 		//block generate
+		void makeBlock();
 		void setStartPoint();
 
         //setting weight

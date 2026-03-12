@@ -25,14 +25,13 @@ void ofApp::keyPressed(int key){
 
 	if (key == 'g' || key == 'G')
 	{
-		std::cout << "[ ofApp ] : Set block data and generate draw object\n";
+		std::cout << "\n[ ofApp ] : Set block data and generate draw object\n";
 
 		if (!block_data) {
 			std::cout << "[ ofApp ] : Block data is not allocated. Generate block data (press N).\n";
 			return;
 		}
 
-		int size = std::min(ofGetWidth(), ofGetHeight()) - 2 * MARGIN;
 		int size = std::min(ofGetWidth(), ofGetHeight()) - 2 * MARGIN;
 
 		if (draw_object)
@@ -46,7 +45,7 @@ void ofApp::keyPressed(int key){
 
 	else if (key == 'd' || key == 'D')
 	{
-		std::cout << "[ ofApp ] : Modify cam degree\n";
+		std::cout << "\n[ ofApp ] : Modify cam degree\n";
 
 		if (!draw_object) {
 			std::cout << "[ ofApp ] : Draw object is not allocated. Generate Draw object (press G).\n";
@@ -64,7 +63,7 @@ void ofApp::keyPressed(int key){
 
 	else if (key == 'l' || key == 'L')
 	{
-		std::cout << "[ ofApp ] : Modify light degree\n";
+		std::cout << "\n[ ofApp ] : Modify light degree\n";
 
 		if (!draw_object) {
 			std::cout << "[ ofApp ] : Draw object is not allocated. Generate Draw object (press G).\n";
@@ -83,7 +82,7 @@ void ofApp::keyPressed(int key){
 	else if (key == 'c' || key == 'C')
 	{
 		//change color
-		std::cout << "[ ofApp ] : Modify block color\n";
+		std::cout << "\n[ ofApp ] : Modify block color\n";
 
 		int r, g, b;
 		std::cout << "block color (R G B) : ";
@@ -94,13 +93,13 @@ void ofApp::keyPressed(int key){
 
 	else if (key == 'n' || key == 'N')
 	{
-		std::cout << "[ ofApp ] : Regenerate block data\n";
+		std::cout << "\n[ ofApp ] : Generate block data\n";
 		consoleInput();
 	}
 
 	else if (key == 's' || key == 'S')
 	{
-		std::cout << "[ ofApp ] : Save image as a file\n";
+		std::cout << "\n[ ofApp ] : Save image as a file\n";
 		std::string filename = "image_" + draw_object->getIdentify() + ".jpg";
 		draw_object->saveImage(filename);
 		std::cout << "[ ofApp ] : " << filename << " saved.\n";
@@ -187,7 +186,7 @@ void ofApp::consoleInput() {
 void ofApp::consoleHelp() {
 	std::cout << "\n-----------------------[ HELP ]-----------------------\n";
 	std::cout << "- G : Set block data and generate draw object\n";
-	std::cout << "- N : Regenerate new block data object\n";
+	std::cout << "- N : Generate new block data object\n";
 	std::cout << "- D : Modify camera degree\n";
 	std::cout << "- L : Modify light degree\n";
 	std::cout << "- C : Modify block color\n";
@@ -198,5 +197,5 @@ void ofApp::consoleHelp() {
 	std::cout << "2. Set block data and generate draw object (press G)\n";
 	std::cout << "3. You can modify certain properties (press D, L, C)\n";
 	std::cout << "4. Generate new block to press G\n";
-	std::cout << "------------------------------------------------------\n\n";
+	std::cout << "------------------------------------------------------\n";
 }

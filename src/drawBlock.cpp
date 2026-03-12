@@ -25,7 +25,7 @@ void drawObject::setup() {
 		get<2>(block_center) * block_size,
 		-get<1>(block_center) * block_size
 	};
-	std::cout << "[ drawBlock ] : cam_center = " << cam_center.x << " " << cam_center.y << " " << cam_center.z << "\n";
+	std::cout << "[ drawObject ] : cam_center = " << cam_center.x << " " << cam_center.y << " " << cam_center.z << "\n";
 }
 
 void drawObject::drawBlocks() {

@@ -1,12 +1,31 @@
 #include "blockGenerator.h"
+//TODO : 하나의 blockData에 대해 중복 생성 방지
 
 //generateBlock
 std::random_device rd;
 std::mt19937 mt(rd());
 
 void blockData::generateBlock() {
-    init();
-    
+	int count = 0;
+
+	while (count++ <= FAIL_COUNT) {
+		init();
+		makeBlock();
+
+		std::string key = getIdentify();
+
+		if (created_list.find(key) == created_list.end()) {
+			created_list.insert(key);
+			break;
+		}
+	}
+
+	if (count > FAIL_COUNT) {
+
+	}
+}
+
+void blockData::makeBlock() {
     int dr[4] = { -1, 0, 1, 0 };
 	int dc[4] = { 0, 1, 0, -1 };
     int cur_count = 0;
@@ -25,9 +44,6 @@ void blockData::generateBlock() {
     cur_count++;
     created.push_back(std::make_tuple(start_r,start_c,1));
 	measureSize(std::make_tuple(start_r, start_c, 1));
-
-	printHeightData();
-	std::cout << "\n";
 
     while(cur_count < block_count) {
         double weight_sum = 0;
@@ -84,10 +100,9 @@ void blockData::generateBlock() {
             //std::cout << "generateBlock - selected : " << get<0>(cur) << " " << get<1>(cur) << " " << get<2>(cur) << "\n";
             break;
         }
-
-		printHeightData();
-		std::cout << "\n";
     }
+
+	isGenerated = true;
 }
 
 void blockData::setStartPoint() {
