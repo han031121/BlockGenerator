@@ -29,4 +29,5 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 		void consoleInput();
 		void consoleHelp();
+		void printStatus();
 };

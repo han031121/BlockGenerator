@@ -69,13 +69,20 @@ public:
         : max_r(_max_r), max_c(_max_c), max_h(_max_h), density_var(_den), allow_duplicate(_dup) {
             block_count_pair = {std::min(_bc1, _bc2), std::max(_bc1, _bc2)};
                 
-            if(std::max(_bc1, _bc2) > max_r * max_c * max_h || std::min(_bc1, _bc2) < 1)
-                throw std::length_error("invalid block_count");
-            if (_max_r > MAX_SIZE || _max_c > MAX_SIZE || _max_h > MAX_SIZE ||
-                _max_r < 1 || _max_c < 1 || _max_h < 1)
-                throw std::length_error("invalid max size");
+			if (std::max(_bc1, _bc2) > max_r * max_c * max_h) {
+				status.setStatus(statusLevel::Warning, "[ blockData ] : Maximum block count is too big. The value has been adjusted");
+				block_count_pair.second = max_r * max_c * max_h;
+			}
+			if (std::min(_bc1, _bc2) < 1) {
+				status.setStatus(statusLevel::Warning, "[ blockData ] : Minimum block count is too small. The value has been adjusted");
+				block_count_pair.first = 1;
+			}
+			if (_max_r > MAX_SIZE || _max_c > MAX_SIZE || _max_h > MAX_SIZE || _max_r < 1 || _max_c < 1 || _max_h < 1) {
+				status.setStatus(statusLevel::Error, "[ blockData ] : Max size value is invalid. Please initialize block data.");
+				max_r = 1; max_c = 1; max_h = 1;
+			}
 
-			std::cout << "[ blockData ] : BlockData generated.\n";
+			status.setStatus(statusLevel::Info, "[ blockData ] : BlockData generated.");
             setWeight();
         }
 

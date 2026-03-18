@@ -10,6 +10,7 @@ void ofApp::update(){
 	if (draw_object) {
 		draw_object->render();
 	}
+	printStatus();
 }
 
 //--------------------------------------------------------------
@@ -204,4 +205,21 @@ void ofApp::consoleHelp() {
 	std::cout << "3. You can modify certain properties (press D, L, C)\n";
 	std::cout << "4. Generate new block to press G\n";
 	std::cout << "------------------------------------------------------\n";
+}
+
+void ofApp::printStatus() {
+	std::string level[3] = { "[ Info ] ", "[ Warning ] ", "[ Error ] " };
+
+	if (block_data && block_data->status.isUpdated()) {
+		std::string msg = "";
+		statusMessage s = block_data->status.getStatus();
+		msg += level[(int)s.level] + s.msg + "\n";
+		std::cout << msg;
+	}
+	if (draw_object && draw_object->status.isUpdated()) {
+		std::string msg = "";
+		statusMessage s = draw_object->status.getStatus();
+		msg += level[(int)s.level] + s.msg + "\n";
+		std::cout << msg;
+	}
 }
