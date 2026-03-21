@@ -65,7 +65,7 @@ private:
 public:
 	statusManager status;
 
-    blockData(int _bc1, int _bc2, int _max_r, int _max_c, int _max_h, double _den, bool _dup)
+    blockData(int _bc1, int _bc2, int _max_r, int _max_c, int _max_h, double _den = 25, bool _dup = 0)
         : max_r(_max_r), max_c(_max_c), max_h(_max_h), density_var(_den), allow_duplicate(_dup) {
             block_count_pair = {std::min(_bc1, _bc2), std::max(_bc1, _bc2)};
                 
