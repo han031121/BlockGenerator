@@ -11,6 +11,8 @@
 #include <cmath>
 #include <numbers>
 #include <string>
+#include <sstream>
+#include <iomanip>
 
 #define MAX_SIZE 13
 #define EPSILON 1e-12
@@ -69,13 +71,17 @@ public:
         : max_r(_max_r), max_c(_max_c), max_h(_max_h), density_var(_den), allow_duplicate(_dup) {
             block_count_pair = {std::min(_bc1, _bc2), std::max(_bc1, _bc2)};
                 
-			if (std::max(_bc1, _bc2) > max_r * max_c * max_h) {
-				status.setStatus(statusLevel::Warning, "[ blockData ] : Maximum block count is too big. The value has been adjusted");
-				block_count_pair.second = max_r * max_c * max_h;
-			}
-			if (std::min(_bc1, _bc2) < 1) {
-				status.setStatus(statusLevel::Warning, "[ blockData ] : Minimum block count is too small. The value has been adjusted");
-				block_count_pair.first = 1;
+			if (block_count_pair.first > max_r * max_c * max_h || block_count_pair.second > max_r * max_c * max_h || block_count_pair.first < 1 || block_count_pair.second < 1) {
+				status.setStatus(statusLevel::Warning, "[ blockData ] : Maximum block count is invalid. The value has been adjusted");
+
+				if (block_count_pair.first > max_r * max_c * max_h)
+					block_count_pair.first = max_r * max_c * max_h;
+				if (block_count_pair.second > max_r * max_c * max_h)
+					block_count_pair.second = max_r * max_c * max_h;
+				if (block_count_pair.first < 1)
+					block_count_pair.first = 1;
+				if (block_count_pair.second < 1)
+					block_count_pair.second = 1;
 			}
 			if (_max_r > MAX_SIZE || _max_c > MAX_SIZE || _max_h > MAX_SIZE || _max_r < 1 || _max_c < 1 || _max_h < 1) {
 				status.setStatus(statusLevel::Error, "[ blockData ] : Max size value is invalid. Please initialize block data.");
