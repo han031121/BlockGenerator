@@ -4,7 +4,7 @@
 
 조건에 맞게 무작위로 블록 군집을 생성하여 렌더링합니다.
 
-![Thumbnail](https://github.com/han031121/ofxBlockGenerator/blob/main/main_image.jpg)
+<img src="https://github.com/han031121/ofxBlockGenerator/blob/main/main_image.jpg" width="500" height="500"/>
 
 ### 블록 군집 조건
 
